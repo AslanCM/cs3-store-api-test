@@ -1,136 +1,491 @@
-**Prueba Técnica - Programador Backend**
+# Prueba Técnica - Desarrollador Backend NestJS
 
-*La siguiente es una prueba para evaluar a los postulantes a programador Back-end.*
+Prueba técnica para evaluar las capacidades de desarrollo backend de los candidatos en el área de Desarrollo de Tecnología en CS3.
 
----
-
-## INTRODUCCIÓN
-
-Este repositorio contiene una serie de requerimientos de un Caso Práctico, que busca evaluar las capacidades técnicas del candidato con respecto a las principales funciones y responsabilidades que se requieren dentro del área de Desarrollo de Tecnología en CS3.
-
-¿Qué se busca evaluar?
-Principalmente los siguientes aspectos:
-
-1. Creatividad para resolver los requerimientos,
-2. Calidad del código entregado (estructura y buenas prácticas),
-3. Eficiencia de los algoritmos entregados,
-4. Familiaridad con Frameworks y plataformas de desarrollo.
-5. Principios SOLID (si conoce).
+## 📋 Tabla de Contenidos
+- [Introducción](#introducción)
+- [Objetivos de Evaluación](#objetivos-de-evaluación)
+- [Requisitos Técnicos](#requisitos-técnicos)
+- [Configuración Inicial](#configuración-inicial)
+- [Estructura de la Base de Datos](#estructura-de-la-base-de-datos)
+- [Requerimientos Funcionales](#requerimientos-funcionales)
+- [Criterios de Evaluación](#criterios-de-evaluación)
+- [Entrega del Proyecto](#entrega-del-proyecto)
 
 ---
 
-## IMPORTANTE
+## 🎯 Introducción
 
-1. Recomendamos emplear un máximo de 2 dias hábiles y enviar todo lo que puedas.
-2. Se requiere de una cuenta de Bitbucket para realizar este ejercicio.
-3. Antes de comenzar a programar:
-    - Realizar un Fork de este repositorio (https://bitbucket.org/cs3dev/backend-test).
-    - Clonar el fork a su máquina local git clone https://cs3dev@bitbucket.org/cs3dev/FORKED-PROJECT.git
-    - Crear un branch en su cuenta de Bitbucket utilizando su nombre completo.
-    - Al finalizar, existen 2 (dos) opciones para entregar su proyecto:
-    - Realizar un Commit de su proyecto, enviar un Pull Request al branch con su NOMBRE, y notificar a la siguiente dirección de correo electrónico dvergel@cs3.com.co.
-    - Enviar el enlace del Fork con la explicacion del montaje al correo dvergel@cs3.com.co.
+Este repositorio contiene una serie de requerimientos de un caso práctico que busca evaluar las capacidades técnicas del candidato para desarrollar una API REST/GraphQL para un sistema de gestión de compras y ventas de una tienda miscelánea.
 
----
+### Objetivos de Evaluación
 
-## ENTREGA ESPERADA
+Se evaluarán los siguientes aspectos:
 
-1. Utilizar NestJS como framework para el desarrollo del backend (**Requerido**).
-2. Implementar GraphQL para la creación de la API (**Opcional**, si no, se pueden realizar con controladores base de Nest).
-3. Utilizar TypeScript para el desarrollo del código (**Requerido**).
-4. Utilizar SQL Server como base de datos para almacenar los libros (**Opcional**, tambien se puede utilizar PostgreSQL u otro).
-6. Utilizar Docker para contenerizar la aplicación (**Requerido**, los cambios se deberian poder subir a Docker Hub).
+1. **Creatividad y resolución de problemas** - Capacidad para resolver los requerimientos de forma eficiente
+2. **Calidad del código** - Estructura clara, buenas prácticas, y código mantenible
+3. **Eficiencia algorítmica** - Optimización de consultas y lógica de negocio
+4. **Familiaridad con tecnologías modernas** - NestJS, TypeScript, Docker, GraphQL
+5. **Principios SOLID** - Aplicación de principios de diseño de software
+6. **Testing** - Implementación de pruebas unitarias e integración
+7. **Documentación** - README claro con instrucciones de instalación y uso
 
 ---
 
-## ESTRUCTURA
+## ⚙️ Requisitos Técnicos
 
-Se desea administrar el sistema de compras y ventas de una tienda miscelanea, teniendo en cuenta que las compras no necesitan datos del comprador, los datos a registrar son solamente datos base de la factura, el detalle de la factura y la informacion de los productos.
+### Obligatorios ✅
 
-![api security diagram](img/diagrama.drawio.svg)
+- **Framework**: NestJS (última versión estable)
+- **Lenguaje**: TypeScript (strict mode habilitado)
+- **Contenedores**: Docker & Docker Compose
+- **Base de datos**: SQL Server, PostgreSQL o MySQL
+- **ORM**: TypeORM o Prisma
+- **Autenticación**: JWT (JSON Web Tokens)
+- **Validación**: class-validator y class-transformer
+- **Variables de entorno**: dotenv o @nestjs/config
 
-### Organizacion (Nombre BD: organization)
+### Opcionales (Puntos extra) ⭐
 
-| Field | Value | Null |
-|---|---|---|
-| id | uniqueidentifier | false |
-| name | varchar(200) | false |
-| email | varchar(50) | false |
-| phone | varchar(50) | false |
-| documentNumber | varchar(40) | false |
-| address | varchar(400) | false |
-| createdAt | datetime | false |
-| updatedAt | datetime | false |
-| deletedAt | datetime | true |
-
-### Cliente (Nombre BD: client)
-
-| Field | Value | Null |
-|---|---|---|
-| id | uniqueidentifier | false |
-| name | varchar(200) | false |
-| documentType | varchar(10) | false |
-| documentNumber | varchar(40) | false |
-| address | varchar(400) | false |
-| createdAt | datetime | false |
-| updatedAt | datetime | false |
-| deletedAt | datetime | true |
-
-### Factura (Nombre BD: facture)
-
-| Field | Value | Null |
-|---|---|---|
-| id | uniqueidentifier | false |
-| date | datetime | false |
-| expiredDate | datetime | false |
-| clientId | uniqueidentifier (forgein key, no primary) | false |
-| createdAt | datetime | false |
-| updatedAt | datetime | false |
-| deletedAt | datetime | true |
-
-### Articulo (Nombre BD: article)
-
-| Field | Value | Null |
-|---|---|---|
-| id | uniqueidentifier | false |
-| name | varchar(50) | false |
-| value | decimal(10,3) | false |
-| wholesaleNumber | int | true |
-| wholesalePercentage | int | true |
-| factureDetailId | uniqueidentifier (forgein key, no primary)  | false |
-| createdAt | datetime | false |
-| updatedAt | datetime | false |
-| deletedAt | datetime | true |
-
-### Factura Detalle (Nombre BD: factureDetail)
-
-| Field | Value | Null |
-|---|---|---|
-| id | uniqueidentifier | false |
-| articleId | uniqueidentifier (forgein key, no primary) | false |
-| numberItems | int | false |
-| createdAt | datetime | false |
-| updatedAt | datetime | false |
-| deletedAt | datetime | true |
+- **API**: GraphQL con Apollo Server
+- **Testing**: Jest (unitarias) y Supertest (e2e)
+- **Documentación**: Swagger/OpenAPI o GraphQL Playground
+- **Caché**: Redis para optimización
+- **Migraciones**: TypeORM migrations o Prisma migrate
+- **Logging**: Winston o Pino
+- **Generación PDF**: puppeteer, pdfkit o @nestjs/pdf
 
 ---
 
-## EJERCICIO
+## 🚀 Configuración Inicial
 
-Luego de poder realizar un CRUD base de cada una de las tablas se desea:
+### Fork del Repositorio
 
-*Tener en cuenta que el aplicativo debe tener las bases de autenticacion (Tabla Usuario) para poder ejecutar los servicios*
+```bash
+# Realizar fork desde Bitbucket
+# URL: https://bitbucket.org/cs3dev/backend-test
 
-1. Devolver como servicio un resumen de la factura con totalizador de montos:
+# Clonar el repositorio forkeado
+git clone https://[TU_USUARIO]@bitbucket.org/[TU_USUARIO]/backend-test.git
 
+# Crear branch con tu nombre completo
+git checkout -b "[tu-nombre-completo]"
+```
 
-![api security diagram](img/explication.drawio.png)
+## 🗄️ Estructura de la Base de Datos
 
-- Teniendo en cuenta los campos de la tabla Articulo (article) **wholesaleNumber** (numero al por mayor) y **wholesalePercentage** (porcentaje de descuento al por mayor) realizar los correspondientes calculos de descuento si algun numero de articulos de la tabla factura detalle sobrepase la cantidad definida al por mayor.
-- De ser posible, devolver en la misma respuesta el arreglo de factura detalle.
+### Diagrama ER
 
-2. Devolver como servicio las 5 facturas con mayor cantidad de objetos comprados.
+```
+Organization (1) ----< Facture >---- (1) Client
+                         |
+                         |
+                    FactureDetail (N)
+                         |
+                         |
+                      Article (1)
+```
 
-3. Devolver como servicio las 5 facturas con mayor cantidad de montos finales.
+### Tablas
 
-4. Utilizar una libreria de generación de documentos pdf con el fin de imprimir los datos tabla de una factura o de cualquiera de los puntos anteriores, el fin de esto es el uso e implementacion correcta de una libreria como modulo estructurado dentro del aplicativo
+#### 1. Organization (organization)
+
+| Campo | Tipo | Null | Descripción |
+|-------|------|------|-------------|
+| id | UUID | NO | Identificador único |
+| name | VARCHAR(200) | NO | Nombre de la organización |
+| email | VARCHAR(50) | NO | Email corporativo |
+| phone | VARCHAR(50) | NO | Teléfono |
+| documentNumber | VARCHAR(40) | NO | NIT/RUC |
+| address | VARCHAR(400) | NO | Dirección |
+| createdAt | DATETIME | NO | Fecha de creación |
+| updatedAt | DATETIME | NO | Fecha de actualización |
+| deletedAt | DATETIME | SÍ | Soft delete |
+
+#### 2. Client (client)
+
+| Campo | Tipo | Null | Descripción |
+|-------|------|------|-------------|
+| id | UUID | NO | Identificador único |
+| name | VARCHAR(200) | NO | Nombre completo |
+| documentType | VARCHAR(10) | NO | CC/CE/NIT/Pasaporte |
+| documentNumber | VARCHAR(40) | NO | Número de documento |
+| address | VARCHAR(400) | NO | Dirección |
+| phone | VARCHAR(50) | SÍ | Teléfono |
+| email | VARCHAR(100) | SÍ | Email |
+| createdAt | DATETIME | NO | Fecha de creación |
+| updatedAt | DATETIME | NO | Fecha de actualización |
+| deletedAt | DATETIME | SÍ | Soft delete |
+
+#### 3. Facture (facture)
+
+| Campo | Tipo | Null | Descripción |
+|-------|------|------|-------------|
+| id | UUID | NO | Identificador único |
+| invoiceNumber | VARCHAR(50) | NO | Número de factura (único) |
+| date | DATETIME | NO | Fecha de emisión |
+| expiredDate | DATETIME | NO | Fecha de vencimiento |
+| clientId | UUID (FK) | NO | Referencia a client |
+| organizationId | UUID (FK) | NO | Referencia a organization |
+| status | ENUM | NO | PENDING/PAID/CANCELLED |
+| totalAmount | DECIMAL(12,2) | NO | Monto total |
+| discount | DECIMAL(12,2) | NO | Descuento aplicado |
+| createdAt | DATETIME | NO | Fecha de creación |
+| updatedAt | DATETIME | NO | Fecha de actualización |
+| deletedAt | DATETIME | SÍ | Soft delete |
+
+#### 4. FactureDetail (facture_detail)
+
+| Campo | Tipo | Null | Descripción |
+|-------|------|------|-------------|
+| id | UUID | NO | Identificador único |
+| factureId | UUID (FK) | NO | Referencia a facture |
+| articleId | UUID (FK) | NO | Referencia a article |
+| quantity | INT | NO | Cantidad de artículos |
+| unitPrice | DECIMAL(12,2) | NO | Precio unitario |
+| subtotal | DECIMAL(12,2) | NO | Subtotal (quantity * unitPrice) |
+| discount | DECIMAL(12,2) | NO | Descuento aplicado |
+| total | DECIMAL(12,2) | NO | Total con descuento |
+| createdAt | DATETIME | NO | Fecha de creación |
+| updatedAt | DATETIME | NO | Fecha de actualización |
+| deletedAt | DATETIME | SÍ | Soft delete |
+
+#### 5. Article (article)
+
+| Campo | Tipo | Null | Descripción |
+|-------|------|------|-------------|
+| id | UUID | NO | Identificador único |
+| sku | VARCHAR(50) | NO | Código único del artículo |
+| name | VARCHAR(200) | NO | Nombre del artículo |
+| description | TEXT | SÍ | Descripción detallada |
+| unitPrice | DECIMAL(12,2) | NO | Precio unitario |
+| wholesaleQuantity | INT | SÍ | Cantidad mínima al por mayor |
+| wholesaleDiscount | DECIMAL(5,2) | SÍ | % de descuento al por mayor |
+| stock | INT | NO | Cantidad en inventario |
+| isActive | BOOLEAN | NO | Estado del artículo |
+| createdAt | DATETIME | NO | Fecha de creación |
+| updatedAt | DATETIME | NO | Fecha de actualización |
+| deletedAt | DATETIME | SÍ | Soft delete |
+
+#### 6. User (user) - Para Autenticación
+
+| Campo | Tipo | Null | Descripción |
+|-------|------|------|-------------|
+| id | UUID | NO | Identificador único |
+| email | VARCHAR(100) | NO | Email (único) |
+| password | VARCHAR(255) | NO | Hash de contraseña |
+| firstName | VARCHAR(100) | NO | Nombre |
+| lastName | VARCHAR(100) | NO | Apellido |
+| role | ENUM | NO | ADMIN/SELLER/VIEWER |
+| isActive | BOOLEAN | NO | Estado del usuario |
+| createdAt | DATETIME | NO | Fecha de creación |
+| updatedAt | DATETIME | NO | Fecha de actualización |
+| deletedAt | DATETIME | SÍ | Soft delete |
+
+---
+
+## 📝 Requerimientos Funcionales
+
+### 1. Autenticación y Autorización ✅
+
+**Implementar sistema completo de autenticación:**
+
+- **POST** `/auth/register` - Registro de usuarios
+- **POST** `/auth/login` - Login (retorna JWT)
+- **POST** `/auth/refresh` - Refresh token
+- **GET** `/auth/profile` - Obtener perfil del usuario autenticado
+- **Guards**: Proteger todos los endpoints excepto login/register
+- **Roles**: Implementar autorización basada en roles (ADMIN, SELLER, VIEWER)
+
+**Ejemplo de respuesta esperada:**
+
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "email": "user@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "role": "SELLER"
+  }
+}
+```
+
+### 2. CRUD Completo para Todas las Entidades ✅
+
+Implementar endpoints CRUD para:
+- Organization
+- Client
+- Article
+- Facture
+- FactureDetail
+
+**Endpoints estándar por entidad:**
+
+```
+GET    /api/v1/{entity}          - Listar (con paginación, filtros, ordenamiento)
+GET    /api/v1/{entity}/:id      - Obtener por ID
+POST   /api/v1/{entity}          - Crear
+PATCH  /api/v1/{entity}/:id      - Actualizar parcialmente
+PUT    /api/v1/{entity}/:id      - Actualizar completamente
+DELETE /api/v1/{entity}/:id      - Eliminar (soft delete)
+```
+
+**Requisitos adicionales:**
+- Validación de DTOs con class-validator
+- Paginación con limit/offset o cursor-based
+- Filtros dinámicos
+- Ordenamiento múltiple
+- Manejo de errores consistente
+
+### 3. Resumen de Factura con Cálculo de Descuentos 💰
+
+**Endpoint:** `GET /api/v1/factures/:id/summary`
+
+**Lógica de negocio:**
+
+1. Obtener factura con todos sus detalles
+2. Por cada artículo en factura_detail:
+   - Si `quantity >= article.wholesaleQuantity`
+   - Aplicar descuento: `discount = unitPrice * quantity * (wholesaleDiscount / 100)`
+3. Calcular totales
+
+**Respuesta esperada:**
+
+```json
+{
+  "facture": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "invoiceNumber": "FAC-2026-001",
+    "date": "2026-02-16T10:00:00Z",
+    "client": {
+      "id": "...",
+      "name": "Juan Pérez",
+      "documentNumber": "12345678"
+    }
+  },
+  "details": [
+    {
+      "article": {
+        "id": "...",
+        "name": "Laptop HP",
+        "sku": "LAP-001"
+      },
+      "quantity": 10,
+      "unitPrice": 1000.00,
+      "subtotal": 10000.00,
+      "discountApplied": true,
+      "discountPercentage": 15,
+      "discountAmount": 1500.00,
+      "total": 8500.00
+    }
+  ],
+  "summary": {
+    "subtotal": 10000.00,
+    "totalDiscount": 1500.00,
+    "totalAmount": 8500.00,
+    "itemsCount": 10
+  }
+}
+```
+
+### 4. Top 5 Facturas por Cantidad de Artículos 📊
+
+**Endpoint:** `GET /api/v1/reports/top-factures-by-quantity`
+
+**Query params opcionales:**
+- `startDate`: Filtrar desde fecha
+- `endDate`: Filtrar hasta fecha
+- `clientId`: Filtrar por cliente
+
+**Respuesta esperada:**
+
+```json
+{
+  "data": [
+    {
+      "factureId": "...",
+      "invoiceNumber": "FAC-2026-100",
+      "clientName": "Juan Pérez",
+      "totalItems": 150,
+      "totalAmount": 25000.00,
+      "date": "2026-02-15T10:00:00Z"
+    }
+  ],
+  "meta": {
+    "total": 5,
+    "generatedAt": "2026-02-16T10:00:00Z"
+  }
+}
+```
+
+### 5. Top 5 Facturas por Monto Total 💵
+
+**Endpoint:** `GET /api/v1/reports/top-factures-by-amount`
+
+**Misma estructura de respuesta que el punto anterior, ordenado por `totalAmount DESC`**
+
+### 6. Generación de PDF 📄
+
+**Endpoint:** `GET /api/v1/factures/:id/pdf`
+
+**Librería recomendada:** `puppeteer`, `pdfkit` o `@nestjs-modules/pdf`
+
+**Funcionalidad:**
+- Generar PDF profesional con logo de la organización
+- Incluir datos de la factura, cliente, detalles de artículos
+- Tabla con totales y descuentos
+- Retornar como stream o base64
+
+**Headers de respuesta:**
+```
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="factura-FAC-2026-001.pdf"
+```
+
+**Bonus:** Implementar también para los reportes:
+- `GET /api/v1/reports/top-factures-by-quantity/pdf`
+- `GET /api/v1/reports/top-factures-by-amount/pdf`
+
+---
+
+## ✅ Criterios de Evaluación
+
+La evaluación se realizará de manera cualitativa sobre los siguientes aspectos. No hay un puntaje mínimo requerido - queremos ver hasta dónde puedes llegar y cómo abordas los problemas.
+
+### Aspectos a Evaluar
+
+#### 1. Funcionalidad
+- ¿Los endpoints implementados funcionan correctamente?
+- ¿La lógica de negocio está bien implementada?
+- ¿Se cumplen los requerimientos especificados?
+- ¿La aplicación maneja casos edge apropiadamente?
+
+#### 2. Calidad del Código
+- **Clean Code**: Código legible, bien organizado y fácil de mantener
+- **SOLID Principles**: Aplicación de principios de diseño orientado a objetos
+- **DRY (Don't Repeat Yourself)**: Evitar duplicación de código
+- **Arquitectura**: Separación clara de responsabilidades (controllers, services, repositories)
+- **Naming**: Nombres descriptivos y consistentes
+
+#### 3. Documentación
+- **README**: Instrucciones claras de instalación y uso
+- **Code Comments**: Comentarios donde sea necesario
+- **API Docs**: Swagger/OpenAPI o GraphQL Playground
+- **Decisiones técnicas**: Explicación de por qué se eligieron ciertas tecnologías
+
+#### 4. Seguridad
+- **Autenticación**: Implementación correcta de JWT
+- **Autorización**: Roles y permisos apropiados
+- **Validaciones**: Validación exhaustiva de inputs
+- **SQL Injection**: Prevención mediante ORM y parametrización
+- **Secrets**: No hay credenciales hardcodeadas
+
+#### 5. Optimización y Performance
+- **Queries eficientes**: Uso apropiado de joins y eager/lazy loading
+- **Índices**: Índices en campos frecuentemente consultados
+- **Paginación**: Implementada en listados grandes
+- **Caché** (Opcional): Redis para optimizar consultas frecuentes
+
+#### 6. Extras Opcionales
+Cualquiera de estos suma positivamente:
+- GraphQL con resolvers bien estructurados
+- Sistema de logging robusto (Winston/Pino)
+- Migraciones versionadas
+- Rate limiting
+- Audit trail
+- Webhooks
+- Exportación a Excel/CSV
+- CI/CD pipeline
+- Frontend básico
+
+### Lo que NO es importante
+
+- **Perfección**: Preferimos ver progreso real sobre código perfecto incompleto
+- **Cantidad de features**: Es mejor tener 3 features bien hechas que 10 a medias
+- **Diseño visual**: Si implementas PDF, la funcionalidad es más importante que lo bonito que se vea el documento
+- **Completar todo**: Entrega lo que puedas completar bien en el tiempo disponible
+
+### Lo que MÁS valoramos
+
+✅ **Código que funciona** - Preferible a código teóricamente perfecto pero con bugs
+
+✅ **Buenas decisiones** - Explicar por qué elegiste cierto enfoque
+
+✅ **Manejo de errores** - Código robusto que no se rompe fácilmente
+
+✅ **Validaciones** - Protección contra inputs inválidos
+
+---
+
+## 📦 Entrega del Proyecto
+
+### Plazo
+
+**2 días hábiles** desde la recepción de la prueba.
+
+> 💡 **IMPORTANTE**: Entrega lo que puedas completar dentro del plazo. Es mejor entregar un proyecto parcial con alta calidad que uno completo con baja calidad. No hay penalización por no completar todos los requerimientos.
+
+### Modalidades de Entrega
+
+#### Opción 1: Pull Request (Recomendada)
+
+1. Realizar commits atómicos con mensajes descriptivos:
+   ```bash
+   git add .
+   git commit -m "feat: implement JWT authentication"
+   git push origin [tu-nombre-completo]
+   ```
+
+2. Crear Pull Request a la rama principal con:
+   - Título descriptivo
+   - Descripción de lo implementado
+   - Instrucciones de instalación y ejecución
+   - Capturas de pantalla (opcional)
+   - Lista de lo que completaste y lo que quedó pendiente
+
+3. Notificar por email a: **dvergel@cs3.com.co**
+   - Asunto: `[Prueba Backend] - [Tu Nombre]`
+   - Incluir link al PR
+
+#### Opción 2: Repositorio Forkeado
+
+1. Asegurarse de que el repositorio sea público o dar acceso a CS3
+2. Enviar email a **dvergel@cs3.com.co** con:
+   - Link al repositorio
+   - Instrucciones completas de instalación
+   - Explicación de arquitectura y decisiones técnicas
+   - Lista de features implementadas vs pendientes
+   - Video demo (opcional pero recomendado)
+
+### Checklist Pre-entrega ✅
+
+- [ ] Código compila sin errores
+- [ ] Docker Compose funciona con `docker-compose up`
+- [ ] Variables de entorno documentadas en `.env.example`
+- [ ] README.md completo con instrucciones
+- [ ] Migraciones incluidas y documentadas
+- [ ] Seeds de datos de prueba disponibles
+- [ ] Endpoints documentados (Swagger o GraphQL Playground)
+- [ ] Tests ejecutándose correctamente (los que hayas implementado)
+- [ ] Sin credenciales hardcodeadas
+- [ ] `.gitignore` configurado correctamente
+
+## Estado del Proyecto completado
+
+## Arquitectura
+[Explicar brevemente la arquitectura y decisiones técnicas]
+
+### Completado ✅
+- [Lista de features completadas]
+
+### Pendiente ⏳
+- [Lista de features que no alcanzaste a implementar]
+
+### Decisiones Técnicas
+- [Explica por qué elegiste ciertas tecnologías o patrones]
+
+## Mejoras Implementadas
+[Lista de mejoras adicionales que agregaste más allá de lo requerido]
