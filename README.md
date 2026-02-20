@@ -39,3 +39,6 @@ Al levantar el contenedor, un Lifecycle Hook de NestJS inserta automáticamente 
     "password": "password123"
 }'
 ## lanzar una vez la semilla esté lista
+
+## ⚠️ Nota de Seguridad
+- Para que las pruebas sean rápidas se deja expuesto el docker-compose.yml
