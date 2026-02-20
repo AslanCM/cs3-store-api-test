@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: cs3_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: rootpassword
+      POSTGRES_DB: cs3_store_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d cs3_store_db']
+      interval: 15s
+      timeout: 8s
+      retries: 3
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: cs3_pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cs3.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '5050:80'
+    depends_on:
+      - postgres-db
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cs3_api
+    restart: always
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:rootpassword@postgres-db:5432/cs3_store_db
+      DB_HOST: postgres-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_USERNAME: postgres
+      DB_PASSWORD: rootpassword
+      DB_NAME: cs3_store_db
+      JWT_SECRET: SomeSecretKeyForJWT
+      JWT_EXPIRES_IN: 15m
+      JWT_REFRESH_SECRET: SomeRandomRefreshSecret
+      JWT_REFRESH_EXPIRES_IN: 7d
+      SECURITY_PEPPER: SomeRandomPepperValue
+
+volumes:
+  postgres_data:
