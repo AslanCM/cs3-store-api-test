@@ -1,6 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { MaxLength } from 'class-validator/types/decorator/string/MaxLength';
+import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { ERole } from 'src/common/enums/role.enum';
 
 export class AddUserDto {
@@ -26,6 +25,7 @@ export class AddUserDto {
   lastName: string;
 
   @IsNotEmpty()
+  @Transform(({ value }) => value?.toUpperCase().trim())
   @IsEnum(ERole, {
     message: `El rol debe ser uno de los siguientes: ${Object.values(ERole).join(', ')}`,
   })

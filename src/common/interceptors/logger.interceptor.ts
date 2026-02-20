@@ -63,7 +63,6 @@ export class LoggerInterceptor implements NestInterceptor {
             message: `${method} to ${url} - ${statusCode} - ${duration}ms`,
             responseStatus: statusCode,
             responseBody: data,
-            userType: requestInfo?.userType,
           },
           LoggerInterceptor.name,
         );
