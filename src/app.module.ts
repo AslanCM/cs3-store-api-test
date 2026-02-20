@@ -11,6 +11,7 @@ import { HealthModule } from './modules/health/health.module';
 import { SeedModule } from './modules/seed/seed.module';
 import { DatabaseModule } from './database/database.module';
 import { ArticleModule } from './modules/v1/article/article.module';
+import { UserModule } from './modules/v1/user/user.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ArticleModule } from './modules/v1/article/article.module';
     SeedModule,
     DatabaseModule,
     ArticleModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

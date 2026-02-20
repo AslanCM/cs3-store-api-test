@@ -1,6 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { MaxLength } from 'class-validator/types/decorator/string/MaxLength';
+import { IsEmail, IsEnum, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { EDocumentType } from 'src/common/enums/document-type.enum';
 
 export class AddClientDto {

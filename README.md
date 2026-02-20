@@ -19,10 +19,16 @@ Al levantar el contenedor, un Lifecycle Hook de NestJS inserta automáticamente 
 - **Graceful Shutdown:** Configurado en el main.ts para cerrar conexiones a BD de forma segura al apagar contenedores.
 - **Healthchecks:** Implementación de `pg_isready` en Docker Compose para asegurar sincronización de arranque entre NestJS y PostgreSQL.
 
-## 🚧 Deuda Técnica y Próximos Pasos (Con un poco más de tiempo)
+## 🚧 Deuda Técnica y Próximos Pasos
 - **Migraciones (TypeORM):** Actualmente `synchronize: true` está activo para agilizar la prueba en desarrollo local. Para un entorno real de producción, implementaría scripts de migración formales.
 - **Testing (Jest):** Implementación de pruebas unitarias para la lógica de negocio de los servicios principales.
 
+## Visualización de data
+- **Url de PgAdmun**
+  - http://localhost:5050
+- **PgAdmin se utiliza con las credenciales**
+  - admin@cs3.com
+  - admin
 
 ## Algunos request en Curl se pueden poner en Postman y al dar enter funcionaran
 - ## **healtcheck**
@@ -41,4 +47,10 @@ Al levantar el contenedor, un Lifecycle Hook de NestJS inserta automáticamente 
 ## lanzar una vez la semilla esté lista
 
 ## ⚠️ Nota de Seguridad
-- Para que las pruebas sean rápidas se deja expuesto el docker-compose.yml
+- Para que las pruebas sean rápidas se deja expuesto el docker-compose.yml con las credenciales quemadas
+
+## Documentación
+-- **URL**
+  - http://localhost:3000/api/docs
+-- **Postman**
+  - Se anexa postman.json para velocidad en los endpoints creados

@@ -58,7 +58,6 @@ export class AppLoggerService extends Logger {
       UOW: requestInfo.UOW,
       'session-tracker': requestInfo['session-tracker'],
       user: requestInfo.user,
-      userType: requestInfo.userType,
     };
   }
 }

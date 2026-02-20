@@ -7,7 +7,7 @@ import { config } from './config';
 
 async function bootstrap() {
   const configService = config();
-  const isProduction = configService.nodeEnv === 'production';
+  const isProduction = configService.nodeEnv !== 'production';
 
   const app = await NestFactory.create(AppModule);
 
@@ -52,8 +52,9 @@ async function bootstrap() {
 
   if (isProduction) {
     const SwaggerBuilder = new DocumentBuilder()
-      .setTitle('Users Logistics API')
+      .setTitle('CS3 Facture API')
       .setVersion('1.0')
+      .setDescription('API documentation for CS3 Factures')
       .addBearerAuth(
         {
           type: 'http',
